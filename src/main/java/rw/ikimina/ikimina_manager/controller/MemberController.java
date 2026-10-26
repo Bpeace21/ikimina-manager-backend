@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +35,11 @@ public class MemberController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(memberServ.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/by-last-name")
+    public ResponseEntity<?> byLastName(@RequestParam String lastName) {
+        return new ResponseEntity<>(memberServ.getByLastName(lastName), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

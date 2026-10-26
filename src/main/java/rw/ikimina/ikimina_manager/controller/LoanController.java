@@ -1,5 +1,6 @@
 package rw.ikimina.ikimina_manager.controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import rw.ikimina.ikimina_manager.domain.Loan;
+import rw.ikimina.ikimina_manager.domain.LoanStatus;
 import rw.ikimina.ikimina_manager.service.LoanService;
 
 @RestController
@@ -34,6 +37,18 @@ public class LoanController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(loanServ.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/by-status")
+    public ResponseEntity<?> byStatus(@RequestParam LoanStatus status) {
+        return new ResponseEntity<>(loanServ.getByStatus(status), HttpStatus.OK);
+    }
+
+    @GetMapping("/between")
+    public ResponseEntity<?> between(@RequestParam String start, @RequestParam String end) {
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        return new ResponseEntity<>(loanServ.getBetween(startDate, endDate), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

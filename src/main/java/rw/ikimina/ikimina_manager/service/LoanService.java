@@ -1,5 +1,6 @@
 package rw.ikimina.ikimina_manager.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rw.ikimina.ikimina_manager.domain.Loan;
+import rw.ikimina.ikimina_manager.domain.LoanStatus;
 import rw.ikimina.ikimina_manager.repository.LoanRepository;
 
 @Service
@@ -23,6 +25,14 @@ public class LoanService {
 
     public List<Loan> getAll() {
         return loanRepo.findAll();
+    }
+
+    public List<Loan> getByStatus(LoanStatus status) {
+        return loanRepo.findByStatusOrderByLoanDateAsc(status);
+    }
+
+    public List<Loan> getBetween(LocalDate start, LocalDate end) {
+        return loanRepo.findByLoanDateBetweenOrderByLoanDateAsc(start, end);
     }
 
     public Optional<Loan> getById(UUID id) {

@@ -25,6 +25,10 @@ public class MemberService {
         return memberRepo.findAll();
     }
 
+    public List<Member> getByLastName(String lastName) {
+        return memberRepo.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+    }
+
     public Optional<Member> getById(UUID id) {
         return memberRepo.findById(id);
     }
