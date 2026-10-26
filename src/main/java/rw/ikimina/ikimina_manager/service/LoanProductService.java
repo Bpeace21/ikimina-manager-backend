@@ -25,6 +25,10 @@ public class LoanProductService {
         return loanProductRepo.findAll();
     }
 
+    public List<LoanProduct> getUnused() {
+        return loanProductRepo.findUnused();
+    }
+
     public Optional<LoanProduct> getById(UUID id) {
         return loanProductRepo.findById(id);
     }

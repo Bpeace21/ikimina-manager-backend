@@ -24,6 +24,11 @@ public class SavingsGroupService {
     public List<SavingsGroup> getAll() {
         return savingsGroupRepo.findAll();
     }
+
+    public List<SavingsGroup> getFree() {
+        return savingsGroupRepo.findFreeGroups();
+    }
+
     public Optional<SavingsGroup> getById(UUID id) {
         return savingsGroupRepo.findById(id);
     }

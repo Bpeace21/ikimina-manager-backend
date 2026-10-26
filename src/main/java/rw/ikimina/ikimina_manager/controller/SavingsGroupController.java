@@ -34,6 +34,12 @@ public class SavingsGroupController {
      public ResponseEntity<?> getAll() {
           return new ResponseEntity<>(savingsGroupServ.getAll(), HttpStatus.OK);
      }
+
+     @GetMapping("/free")
+     public ResponseEntity<?> free() {
+          return new ResponseEntity<>(savingsGroupServ.getFree(), HttpStatus.OK);
+     }
+
      @GetMapping("/{id}")
      public ResponseEntity<?> getById(@PathVariable UUID id) {
           Optional<SavingsGroup> found = savingsGroupServ.getById(id);

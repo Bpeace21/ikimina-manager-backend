@@ -36,6 +36,11 @@ public class LoanProductController {
         return new ResponseEntity<>(loanProductServ.getAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/unused")
+    public ResponseEntity<?> unused() {
+        return new ResponseEntity<>(loanProductServ.getUnused(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
         Optional<LoanProduct> found = loanProductServ.getById(id);

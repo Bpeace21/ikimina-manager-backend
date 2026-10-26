@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rw.ikimina.ikimina_manager.domain.Member;
 import rw.ikimina.ikimina_manager.service.MemberService;
+import rw.ikimina.ikimina_manager.service.TreasurerService;
 
 @RestController
 @RequestMapping("/api/members")
@@ -25,6 +26,9 @@ public class MemberController {
 
     @Autowired
     private MemberService memberServ;
+
+    @Autowired
+    private TreasurerService treasurerServ;
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody Member member) {
@@ -40,6 +44,14 @@ public class MemberController {
     @GetMapping("/by-last-name")
     public ResponseEntity<?> byLastName(@RequestParam String lastName) {
         return new ResponseEntity<>(memberServ.getByLastName(lastName), HttpStatus.OK);
+    }
+
+    @GetMapping("/of-treasurer/{treasurerId}")
+    public ResponseEntity<?> ofTreasurer(@PathVariable UUID treasurerId) {
+        if (treasurerServ.getById(treasurerId).isEmpty()) {
+            return new ResponseEntity<>("The treasurer with that id does not exist", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(memberServ.getMembersOfTreasurer(treasurerId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

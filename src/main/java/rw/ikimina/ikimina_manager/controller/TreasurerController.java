@@ -9,10 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rw.ikimina.ikimina_manager.domain.Treasurer;
@@ -34,6 +36,11 @@ public class TreasurerController {
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         return new ResponseEntity<>(treasurerServ.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/by-loan-product")
+    public ResponseEntity<?> byLoanProduct(@RequestParam String name) {
+        return new ResponseEntity<>(treasurerServ.getByLoanProduct(name), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -59,6 +66,30 @@ public class TreasurerController {
         String returnedMessage = treasurerServ.deleteTreasurer(id);
         if (returnedMessage.equals("Treasurer deleted successfully")) {
             return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{treasurerId}/loan-products/{loanProductId}")
+    public ResponseEntity<?> addLoanProduct(@PathVariable UUID treasurerId, @PathVariable UUID loanProductId) {
+        String returnedMessage = treasurerServ.addLoanProduct(treasurerId, loanProductId);
+        if (returnedMessage.equals("Loan product added to the treasurer")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        }
+        if (returnedMessage.equals("The treasurer already has that loan product")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @PatchMapping("/{treasurerId}/savings-group")
+    public ResponseEntity<?> changeGroup(@PathVariable UUID treasurerId, @RequestParam int groupNumber) {
+        String returnedMessage = treasurerServ.changeSavingsGroup(treasurerId, groupNumber);
+        if (returnedMessage.equals("Savings group changed successfully")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.OK);
+        }
+        if (returnedMessage.equals("That savings group is taken by another treasurer")) {
+            return new ResponseEntity<>(returnedMessage, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(returnedMessage, HttpStatus.NOT_FOUND);
     }

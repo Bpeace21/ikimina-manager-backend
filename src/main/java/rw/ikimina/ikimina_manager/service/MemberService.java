@@ -29,6 +29,10 @@ public class MemberService {
         return memberRepo.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
     }
 
+    public List<Member> getMembersOfTreasurer(UUID treasurerId) {
+        return memberRepo.findMembersOfTreasurer(treasurerId);
+    }
+
     public Optional<Member> getById(UUID id) {
         return memberRepo.findById(id);
     }
